@@ -4,18 +4,17 @@ function getRandomHexColor() {
 
 function createBoxes(amount) {
   const boxesContainer = document.getElementById('boxes');
-  boxesContainer.innerHTML = ''; // Очищення контейнера перед додаванням нових елементів
+  boxesContainer.innerHTML = ''; // Clear the container before adding new boxes
   const initialSize = 30;
   const fragment = document.createDocumentFragment();
 
   for (let i = 0; i < amount; i++) {
     const size = initialSize + i * 10;
-    const div = document.createElement('div');
-    div.style.width = `${size}px`;
-    div.style.height = `${size}px`;
-    div.style.backgroundColor = getRandomHexColor();
-    fragment.appendChild(div);
+    const box = document.createElement('div');
+    box.style.cssText = `width: ${size}px; height: ${size}px; background-color: ${getRandomHexColor()};`;
+    fragment.appendChild(box);
   }
+
   boxesContainer.appendChild(fragment);
 }
 
@@ -24,14 +23,16 @@ function destroyBoxes() {
   boxesContainer.innerHTML = '';
 }
 
-document.getElementById('btn-create').addEventListener('click', () => {
-  const number = Number(document.getElementById('input-number').value.trim());
-  if (number >= 1 && number <= 100) {
-    createBoxes(number);
-    document.getElementById('input-number').value = ''; // Очищення поля вводу
+document.querySelector('[data-create]').addEventListener('click', function () {
+  const input = document.querySelector('input[type="number"]');
+  const value = Number(input.value);
+  
+  if (value >= 1 && value <= 100) {
+    createBoxes(value);
+    input.value = ''; // Clear input after creating boxes
   }
 });
 
-document.getElementById('btn-destroy').addEventListener('click', () => {
+document.querySelector('[data-destroy]').addEventListener('click', function () {
   destroyBoxes();
 });
